@@ -1,0 +1,476 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Sky blue theme - playful educational game */
+    --background: 195 100% 95%;
+    --foreground: 220 25% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 25% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 25% 20%;
+
+    /* Orange accent - matches the design */
+    --primary: 30 95% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Sky blue secondary */
+    --secondary: 195 85% 70%;
+    --secondary-foreground: 220 25% 15%;
+
+    --muted: 195 30% 90%;
+    --muted-foreground: 220 15% 45%;
+
+    /* Teal accent for success states */
+    --accent: 170 65% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Red for errors/wrong answers */
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Warm cream for borders */
+    --border: 35 30% 85%;
+    --input: 35 30% 85%;
+    --ring: 30 95% 55%;
+
+    --radius: 1rem;
+
+    /* Phase-specific colors */
+    --phase-preparation: 35 85% 60%;
+    --phase-incubation: 280 60% 65%;
+    --phase-illumination: 45 95% 60%;
+    --phase-verification: 145 60% 50%;
+
+    /* Streak/combo effects */
+    --streak-glow: 45 100% 50%;
+    --combo-gradient: linear-gradient(135deg, hsl(30, 95%, 55%), hsl(45, 100%, 60%), hsl(280, 60%, 65%));
+
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -2px hsl(220 25% 20% / 0.1);
+    --shadow-card: 0 8px 30px -4px hsl(220 25% 20% / 0.15);
+    --shadow-glow: 0 0 30px hsl(30 95% 55% / 0.3);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 30% 12%;
+    --foreground: 195 30% 95%;
+
+    --card: 220 25% 18%;
+    --card-foreground: 195 30% 95%;
+
+    --popover: 220 25% 18%;
+    --popover-foreground: 195 30% 95%;
+
+    --primary: 30 90% 50%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 195 50% 30%;
+    --secondary-foreground: 195 30% 95%;
+
+    --muted: 220 20% 25%;
+    --muted-foreground: 195 20% 65%;
+
+    --accent: 170 50% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 65% 45%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 20% 25%;
+    --input: 220 20% 25%;
+    --ring: 30 90% 50%;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+  }
+}
+
+@layer components {
+  .puzzle-piece {
+    @apply relative rounded-xl border-2 p-3 cursor-grab active:cursor-grabbing transition-all duration-200;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .puzzle-piece:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-card);
+  }
+
+  .puzzle-piece.dragging {
+    @apply opacity-60 scale-105;
+    box-shadow: var(--shadow-glow);
+  }
+
+  .drop-zone {
+    @apply relative rounded-2xl border-3 border-dashed transition-all duration-300;
+    min-height: 120px;
+  }
+
+  .drop-zone.highlighted {
+    @apply border-solid bg-primary/10 scale-[1.02];
+    box-shadow: var(--shadow-glow);
+  }
+
+  .phase-preparation {
+    @apply bg-phase-preparation/20 border-phase-preparation;
+  }
+
+  .phase-incubation {
+    @apply bg-phase-incubation/20 border-phase-incubation;
+  }
+
+  .phase-illumination {
+    @apply bg-phase-illumination/20 border-phase-illumination;
+  }
+
+  .phase-verification {
+    @apply bg-phase-verification/20 border-phase-verification;
+  }
+
+  .streak-badge {
+    @apply inline-flex items-center gap-1 px-3 py-1 rounded-full font-bold text-sm;
+    background: var(--combo-gradient);
+    animation: streak-pulse 1s ease-in-out infinite;
+  }
+
+  .score-popup {
+    @apply absolute font-bold text-lg pointer-events-none;
+    animation: score-float 1s ease-out forwards;
+  }
+
+  .glass-card {
+    @apply bg-card/80 backdrop-blur-md rounded-2xl border border-border/50;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Jigsaw puzzle piece styling with SVG-like tabs */
+  .jigsaw-piece {
+    @apply relative p-3 cursor-grab active:cursor-grabbing transition-all duration-200;
+    background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.95) 100%);
+    border: 3px solid hsl(var(--border));
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.1),
+      inset 0 2px 0 rgba(255,255,255,0.6),
+      inset 0 -1px 0 rgba(0,0,0,0.05);
+    clip-path: polygon(
+      0% 0%,
+      35% 0%,
+      35% 0%,
+      40% -8%,
+      50% -12%,
+      60% -8%,
+      65% 0%,
+      100% 0%,
+      100% 35%,
+      108% 40%,
+      112% 50%,
+      108% 60%,
+      100% 65%,
+      100% 100%,
+      65% 100%,
+      60% 108%,
+      50% 112%,
+      40% 108%,
+      35% 100%,
+      0% 100%,
+      0% 65%,
+      -8% 60%,
+      -12% 50%,
+      -8% 40%,
+      0% 35%
+    );
+  }
+
+  .jigsaw-piece:hover {
+    transform: translateY(-4px) scale(1.04) rotate(1deg);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+  }
+
+  .jigsaw-piece.dragging {
+    @apply opacity-75 scale-110;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  }
+
+  /* Title jigsaw piece - prominent with tab connectors */
+  .jigsaw-title {
+    @apply relative font-display font-bold text-center py-3 px-5 cursor-grab active:cursor-grabbing;
+    background: linear-gradient(145deg, hsl(30 95% 58%) 0%, hsl(35 90% 52%) 100%);
+    color: white;
+    border: 3px solid hsl(30 75% 42%);
+    box-shadow: 
+      0 5px 18px rgba(0,0,0,0.22),
+      inset 0 2px 0 rgba(255,255,255,0.35),
+      inset 0 -2px 0 rgba(0,0,0,0.1);
+    text-shadow: 0 2px 3px rgba(0,0,0,0.25);
+    clip-path: polygon(
+      0% 0%,
+      40% 0%,
+      42% -6%,
+      50% -10%,
+      58% -6%,
+      60% 0%,
+      100% 0%,
+      100% 40%,
+      106% 42%,
+      110% 50%,
+      106% 58%,
+      100% 60%,
+      100% 100%,
+      60% 100%,
+      58% 106%,
+      50% 110%,
+      42% 106%,
+      40% 100%,
+      0% 100%,
+      0% 60%,
+      -6% 58%,
+      -10% 50%,
+      -6% 42%,
+      0% 40%
+    );
+  }
+
+  .jigsaw-title:hover {
+    transform: translateY(-3px) scale(1.06);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.28);
+  }
+
+  /* Quote card with jigsaw styling - indent on left */
+  .quote-jigsaw {
+    @apply relative bg-white p-4 cursor-grab active:cursor-grabbing;
+    border: 3px solid hsl(195 75% 55%);
+    box-shadow: 
+      0 4px 12px rgba(0,0,0,0.12),
+      inset 0 2px 0 rgba(255,255,255,0.9);
+    clip-path: polygon(
+      12% 0%,
+      100% 0%,
+      100% 40%,
+      108% 45%,
+      110% 50%,
+      108% 55%,
+      100% 60%,
+      100% 100%,
+      12% 100%,
+      12% 60%,
+      4% 55%,
+      0% 50%,
+      4% 45%,
+      12% 40%
+    );
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+
+  .quote-jigsaw:hover {
+    transform: translateY(-3px) scale(1.03);
+    border-color: hsl(195 80% 48%);
+    box-shadow: 0 8px 22px rgba(0,0,0,0.18);
+  }
+
+  /* Phase drop zones with jigsaw interlocking edges */
+  .jigsaw-zone {
+    @apply relative transition-all duration-300;
+    background: linear-gradient(145deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.7) 100%);
+    border: 3px dashed hsl(var(--border));
+    clip-path: polygon(
+      0% 0%,
+      40% 0%,
+      43% 4%,
+      50% 6%,
+      57% 4%,
+      60% 0%,
+      100% 0%,
+      100% 40%,
+      96% 43%,
+      94% 50%,
+      96% 57%,
+      100% 60%,
+      100% 100%,
+      60% 100%,
+      57% 96%,
+      50% 94%,
+      43% 96%,
+      40% 100%,
+      0% 100%,
+      0% 60%,
+      4% 57%,
+      6% 50%,
+      4% 43%,
+      0% 40%
+    );
+  }
+
+  .jigsaw-zone.active {
+    background: linear-gradient(145deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
+    border-style: solid;
+    box-shadow: 0 0 25px rgba(0,0,0,0.1);
+  }
+
+  .jigsaw-zone.highlighted {
+    border-color: hsl(var(--primary));
+    box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+  }
+
+  /* Connected zone styling */
+  .jigsaw-zone.connected {
+    border-style: solid;
+    box-shadow: 
+      inset 0 0 20px rgba(34, 197, 94, 0.15),
+      0 0 20px rgba(34, 197, 94, 0.2);
+  }
+
+  /* Snap animation effect */
+  .snap-animation {
+    animation: snap-together 0.4s ease-out;
+  }
+
+  @keyframes snap-together {
+    0% { transform: translateX(-8px); }
+    30% { transform: translateX(4px); }
+    60% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: 'Fredoka', sans-serif;
+  }
+
+  .font-body {
+    font-family: 'Quicksand', sans-serif;
+  }
+
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px hsl(220 25% 20% / 0.1);
+  }
+
+  .animate-bounce-soft {
+    animation: bounce-soft 2s ease-in-out infinite;
+  }
+
+  .animate-wiggle {
+    animation: wiggle 0.5s ease-in-out;
+  }
+
+  .animate-confetti {
+    animation: confetti 1s ease-out forwards;
+  }
+
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+}
+
+@keyframes bounce-soft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-5deg); }
+  75% { transform: rotate(5deg); }
+}
+
+@keyframes confetti {
+  0% { transform: scale(0) rotate(0deg); opacity: 1; }
+  100% { transform: scale(1.5) rotate(360deg); opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-10px) rotate(2deg); }
+  66% { transform: translateY(-5px) rotate(-2deg); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(30 95% 55% / 0.3); }
+  50% { box-shadow: 0 0 40px hsl(30 95% 55% / 0.5); }
+}
+
+@keyframes streak-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+@keyframes score-float {
+  0% { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(-50px) scale(1.2); }
+}
+
+/* Jigsaw puzzle connector effect */
+.jigsaw-connector {
+  position: relative;
+}
+
+.jigsaw-connector::before {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: inherit;
+  border-radius: 50%;
+  border: inherit;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .puzzle-piece {
+    @apply p-2 text-sm;
+  }
+
+  .drop-zone {
+    min-height: 80px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
