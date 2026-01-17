@@ -418,9 +418,9 @@ const Play = () => {
             </motion.div>
           )}
 
-          <div className="grid lg:grid-cols-4 gap-3 md:gap-4">
+          <div className="grid md:grid-cols-4 gap-3 md:gap-4">
             {/* Puzzle - Full width on mobile */}
-            <div className="lg:col-span-3 order-2 lg:order-1">
+            <div className="md:col-span-3 order-2 md:order-1">
               <ElephantPuzzle
                 placedQuotes={placedQuotes}
                 placedTitles={placedTitles}
@@ -440,21 +440,21 @@ const Play = () => {
             </div>
 
             {/* Sidebar - Draggable items */}
-            <div className="order-1 lg:order-2 lg:space-y-4 flex lg:flex-col gap-3 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0 lg:max-h-[70vh] lg:overflow-y-auto">
+            <div className="order-1 md:order-2 flex flex-col gap-3 md:gap-4 md:max-h-[70vh] md:overflow-y-auto">
               {/* Titles */}
               {availableTitles.length > 0 && (
-                <div className="bg-gradient-to-br from-orange-50/90 to-amber-50/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-md flex-shrink-0 min-w-[160px] lg:min-w-0 border-2 border-dashed border-orange-300">
+                <div className="bg-gradient-to-br from-orange-50/90 to-amber-50/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-md flex-shrink-0 min-w-[160px] md:min-w-0 border-2 border-dashed border-orange-300">
                   <h3 className="font-display font-bold text-sm mb-2 text-sky-800 flex items-center gap-2">
                     📝 Phase Titles ({availableTitles.length})
                   </h3>
-                  <div className="flex flex-wrap lg:flex-col gap-2">
+                  <div className="flex gap-2 overflow-x-auto pb-1 md:flex-col md:overflow-x-visible md:pb-0">
                     {availableTitles.map((title) => (
                       <DraggableItem
                         key={title.id}
                         id={title.id}
                         onDragStart={() => { playSound("pickup"); setDraggedTitle(title); }}
                         onDragEnd={() => { setDraggedTitle(null); setHighlightedZone(null); }}
-                        className="bg-white rounded-lg px-3 py-2 shadow-sm border-2 border-orange-200 hover:border-orange-400 transition-colors"
+                        className="bg-white rounded-lg px-3 py-2 shadow-sm border-2 border-orange-200 hover:border-orange-400 transition-colors shrink-0"
                       >
                         <span className="font-display font-bold text-sm text-gray-700">
                           {title.title}
@@ -466,18 +466,18 @@ const Play = () => {
               )}
 
               {/* Quotes */}
-              <div className="bg-gradient-to-br from-sky-50/90 to-blue-50/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-md flex-1 min-w-[220px] lg:min-w-0 border-2 border-dashed border-sky-300">
+              <div className="bg-gradient-to-br from-sky-50/90 to-blue-50/90 backdrop-blur-sm rounded-xl p-3 md:p-4 shadow-md flex-1 min-w-[220px] md:min-w-0 border-2 border-dashed border-sky-300">
                 <h3 className="font-display font-bold text-sm mb-2 text-sky-800 flex items-center gap-2">
                   💬 Quotes ({availableQuotes.length})
                 </h3>
-                <div className="flex flex-wrap lg:grid lg:grid-cols-1 gap-2 lg:max-h-[50vh] lg:overflow-y-auto pr-1">
+                <div className="flex gap-2 overflow-x-auto pb-1 md:grid md:grid-cols-1 md:max-h-[50vh] md:overflow-y-auto md:pr-1 md:pb-0">
                   {availableQuotes.map((quote) => (
                     <DraggableItem
                       key={quote.id}
                       id={quote.id}
                       onDragStart={() => { playSound("pickup"); setDraggedQuote(quote); }}
                       onDragEnd={() => { setDraggedQuote(null); setHighlightedZone(null); }}
-                      className="bg-white rounded-lg p-3 shadow-sm border-2 border-sky-200 hover:border-sky-400 transition-colors min-w-[180px] lg:min-w-0"
+                      className="bg-white rounded-lg p-3 shadow-sm border-2 border-sky-200 hover:border-sky-400 transition-colors min-w-[180px] md:min-w-0 shrink-0"
                     >
                       <p className="text-xs text-gray-700 line-clamp-2 italic">
                         "{quote.text.substring(0, 60)}..."
